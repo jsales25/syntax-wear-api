@@ -7,6 +7,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// Models based on PRD (users and products)
+
 model User {
   id        Int       @id @default(autoincrement())
   firstName String
@@ -15,8 +17,14 @@ model User {
   password  String
   cpf       String?   @unique
   phone     String?
-  birthDate DateTime? @db.Timestamptz(6)
-  createdAt DateTime  @default(now()) @db.Timestamptz(6)
+  birthDate DateTime?
+  createdAt DateTime  @default(now())
+  role      Role      @default(USER)
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Product {
@@ -24,12 +32,12 @@ model Product {
   name        String
   slug        String   @unique
   description String?
-  price       Decimal  @db.Decimal
+  price       Decimal
   colors      Json?
   images      Json?
   sizes       Json?
   stock       Int      @default(0)
   active      Boolean  @default(true)
-  createdAt   DateTime @default(now()) @db.Timestamptz(6)
-  updatedAt   DateTime @default(now()) @updatedAt @db.Timestamptz(6)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
